@@ -1,0 +1,598 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T08:28:59.760Z",
+  "title": "Design System: Nexus",
+  "extensions": {
+    "colorMeta": {
+      "scarlet": {
+        "role": "primary",
+        "displayName": "Signal Scarlet",
+        "canonical": "oklch(58.4% 0.224 25.0)",
+        "tonalRamp": [
+          "oklch(15% 0.143 25.0)",
+          "oklch(26% 0.164 25.0)",
+          "oklch(37% 0.184 25.0)",
+          "oklch(48% 0.205 25.0)",
+          "oklch(59% 0.223 25.0)",
+          "oklch(70% 0.203 25.0)",
+          "oklch(82% 0.180 25.0)",
+          "oklch(95% 0.156 25.0)"
+        ]
+      },
+      "scarlet-deep": {
+        "role": "primary",
+        "displayName": "Pressed Scarlet",
+        "canonical": "oklch(52.1% 0.205 26.1)",
+        "tonalRamp": [
+          "oklch(15% 0.142 26.1)",
+          "oklch(26% 0.161 26.1)",
+          "oklch(37% 0.179 26.1)",
+          "oklch(48% 0.198 26.1)",
+          "oklch(59% 0.193 26.1)",
+          "oklch(70% 0.175 26.1)",
+          "oklch(82% 0.154 26.1)",
+          "oklch(95% 0.132 26.1)"
+        ]
+      },
+      "error-ink": {
+        "role": "primary",
+        "displayName": "Error Rose",
+        "canonical": "oklch(76.4% 0.142 16.1)",
+        "tonalRamp": [
+          "oklch(15% 0.069 16.1)",
+          "oklch(26% 0.082 16.1)",
+          "oklch(37% 0.095 16.1)",
+          "oklch(48% 0.108 16.1)",
+          "oklch(59% 0.121 16.1)",
+          "oklch(70% 0.134 16.1)",
+          "oklch(82% 0.135 16.1)",
+          "oklch(95% 0.120 16.1)"
+        ]
+      },
+      "cobalt": {
+        "role": "secondary",
+        "displayName": "Cobalt Line",
+        "canonical": "oklch(58.1% 0.229 263.9)",
+        "tonalRamp": [
+          "oklch(15% 0.147 263.9)",
+          "oklch(26% 0.168 263.9)",
+          "oklch(37% 0.189 263.9)",
+          "oklch(48% 0.210 263.9)",
+          "oklch(59% 0.227 263.9)",
+          "oklch(70% 0.206 263.9)",
+          "oklch(82% 0.183 263.9)",
+          "oklch(95% 0.158 263.9)"
+        ]
+      },
+      "amber": {
+        "role": "tertiary",
+        "displayName": "Amber Line",
+        "canonical": "oklch(84.6% 0.172 85.3)",
+        "tonalRamp": [
+          "oklch(15% 0.072 85.3)",
+          "oklch(26% 0.088 85.3)",
+          "oklch(37% 0.103 85.3)",
+          "oklch(48% 0.119 85.3)",
+          "oklch(59% 0.135 85.3)",
+          "oklch(70% 0.151 85.3)",
+          "oklch(82% 0.168 85.3)",
+          "oklch(95% 0.157 85.3)"
+        ]
+      },
+      "green": {
+        "role": "tertiary",
+        "displayName": "Standards Green",
+        "canonical": "oklch(66.7% 0.183 147.8)",
+        "tonalRamp": [
+          "oklch(15% 0.104 147.8)",
+          "oklch(26% 0.121 147.8)",
+          "oklch(37% 0.138 147.8)",
+          "oklch(48% 0.154 147.8)",
+          "oklch(59% 0.171 147.8)",
+          "oklch(70% 0.178 147.8)",
+          "oklch(82% 0.160 147.8)",
+          "oklch(95% 0.140 147.8)"
+        ]
+      },
+      "violet": {
+        "role": "tertiary",
+        "displayName": "Tool Violet",
+        "canonical": "oklch(66.0% 0.179 298.6)",
+        "tonalRamp": [
+          "oklch(15% 0.103 298.6)",
+          "oklch(26% 0.120 298.6)",
+          "oklch(37% 0.136 298.6)",
+          "oklch(48% 0.152 298.6)",
+          "oklch(59% 0.169 298.6)",
+          "oklch(70% 0.173 298.6)",
+          "oklch(82% 0.155 298.6)",
+          "oklch(95% 0.136 298.6)"
+        ]
+      },
+      "teal": {
+        "role": "tertiary",
+        "displayName": "Guide Teal",
+        "canonical": "oklch(70.0% 0.117 191.2)",
+        "tonalRamp": [
+          "oklch(15% 0.063 191.2)",
+          "oklch(26% 0.074 191.2)",
+          "oklch(37% 0.085 191.2)",
+          "oklch(48% 0.095 191.2)",
+          "oklch(59% 0.106 191.2)",
+          "oklch(70% 0.117 191.2)",
+          "oklch(82% 0.105 191.2)",
+          "oklch(95% 0.092 191.2)"
+        ]
+      },
+      "enamel": {
+        "role": "neutral",
+        "displayName": "Midnight Enamel",
+        "canonical": "oklch(19.6% 0.060 270.1)",
+        "tonalRamp": [
+          "oklch(15% 0.058 270.1)",
+          "oklch(26% 0.057 270.1)",
+          "oklch(37% 0.052 270.1)",
+          "oklch(48% 0.046 270.1)",
+          "oklch(59% 0.041 270.1)",
+          "oklch(70% 0.035 270.1)",
+          "oklch(82% 0.029 270.1)",
+          "oklch(95% 0.022 270.1)"
+        ]
+      },
+      "enamel-deep": {
+        "role": "neutral",
+        "displayName": "Deep Enamel",
+        "canonical": "oklch(16.4% 0.047 270.3)",
+        "tonalRamp": [
+          "oklch(15% 0.046 270.3)",
+          "oklch(26% 0.043 270.3)",
+          "oklch(37% 0.039 270.3)",
+          "oklch(48% 0.034 270.3)",
+          "oklch(59% 0.030 270.3)",
+          "oklch(70% 0.026 270.3)",
+          "oklch(82% 0.021 270.3)",
+          "oklch(95% 0.016 270.3)"
+        ]
+      },
+      "enamel-raise": {
+        "role": "neutral",
+        "displayName": "Raised Enamel",
+        "canonical": "oklch(23.2% 0.071 267.8)",
+        "tonalRamp": [
+          "oklch(15% 0.066 267.8)",
+          "oklch(26% 0.069 267.8)",
+          "oklch(37% 0.062 267.8)",
+          "oklch(48% 0.056 267.8)",
+          "oklch(59% 0.049 267.8)",
+          "oklch(70% 0.043 267.8)",
+          "oklch(82% 0.036 267.8)",
+          "oklch(95% 0.028 267.8)"
+        ]
+      },
+      "enamel-hover": {
+        "role": "neutral",
+        "displayName": "Hover Enamel",
+        "canonical": "oklch(26.9% 0.081 268.7)",
+        "tonalRamp": [
+          "oklch(15% 0.073 268.7)",
+          "oklch(26% 0.080 268.7)",
+          "oklch(37% 0.074 268.7)",
+          "oklch(48% 0.067 268.7)",
+          "oklch(59% 0.059 268.7)",
+          "oklch(70% 0.052 268.7)",
+          "oklch(82% 0.044 268.7)",
+          "oklch(95% 0.035 268.7)"
+        ]
+      },
+      "porcelain": {
+        "role": "neutral",
+        "displayName": "Porcelain",
+        "canonical": "oklch(95.9% 0.010 87.5)",
+        "tonalRamp": [
+          "oklch(15% 0.003 87.5)",
+          "oklch(26% 0.004 87.5)",
+          "oklch(37% 0.005 87.5)",
+          "oklch(48% 0.006 87.5)",
+          "oklch(59% 0.007 87.5)",
+          "oklch(70% 0.008 87.5)",
+          "oklch(82% 0.009 87.5)",
+          "oklch(95% 0.010 87.5)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Mist Ink",
+        "canonical": "oklch(82.2% 0.038 272.0)",
+        "tonalRamp": [
+          "oklch(15% 0.017 272.0)",
+          "oklch(26% 0.020 272.0)",
+          "oklch(37% 0.023 272.0)",
+          "oklch(48% 0.027 272.0)",
+          "oklch(59% 0.030 272.0)",
+          "oklch(70% 0.034 272.0)",
+          "oklch(82% 0.037 272.0)",
+          "oklch(95% 0.034 272.0)"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Dusk Ink",
+        "canonical": "oklch(68.4% 0.053 272.5)",
+        "tonalRamp": [
+          "oklch(15% 0.029 272.5)",
+          "oklch(26% 0.034 272.5)",
+          "oklch(37% 0.039 272.5)",
+          "oklch(48% 0.044 272.5)",
+          "oklch(59% 0.049 272.5)",
+          "oklch(70% 0.052 272.5)",
+          "oklch(82% 0.047 272.5)",
+          "oklch(95% 0.041 272.5)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White"
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(244, 241, 234, 0.24)"
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "rgba(244, 241, 234, 0.5)"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Welcome headline in the empty Agent view only; uppercase."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Reading-view page titles (MCP); uppercase; 40px under 960px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Selected station name or Network at the head of the side panel; uppercase."
+      },
+      "question": {
+        "displayName": "Question",
+        "purpose": "The user's question at the head of each turn; sentence case."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Live run stats (22px) and network figures (26px), labelled underneath."
+      },
+      "station": {
+        "displayName": "Station",
+        "purpose": "Route station headings; uppercase."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Nav items and buttons; uppercase; 13px on small buttons."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Terms, table headers, tags, badges, filters, line-ruled section headings; uppercase, 11.5 to 13px, 0.12 to 0.18em."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All prose, chips, inputs, table cells; tabular figures."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Intro paragraphs, 46 to 62ch."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Paths, tool-output previews, config snippets."
+      }
+    },
+    "shadows": [
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 1px #2f6bff",
+        "purpose": "Text field keyboard focus, paired with a cobalt border."
+      },
+      {
+        "name": "ready-halo",
+        "value": "0 0 0 3px rgba(34, 177, 76, 0.22)",
+        "purpose": "Status lamp when the semantic index is ready."
+      },
+      {
+        "name": "station-pulse",
+        "value": "0 0 0 0 rgba(244, 241, 234, 0.55) -> 0 0 0 12px rgba(244, 241, 234, 0)",
+        "purpose": "Animated ring on the active route station (1.4s, infinite)."
+      },
+      {
+        "name": "focus-outline",
+        "value": "outline: 2px solid #f4f1ea; outline-offset: 2px",
+        "purpose": "Global :focus-visible outline for every interactive element."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "System ease for arrivals, presses and pulses."
+      },
+      {
+        "name": "state",
+        "value": "0.2s",
+        "purpose": "Colour, border and background transitions on hover."
+      },
+      {
+        "name": "press",
+        "value": "0.15s, translateY(1px)",
+        "purpose": "Button press."
+      },
+      {
+        "name": "arrive",
+        "value": "0.5s (stations) / 0.6s (answer), from translateY(8px) opacity 0.2",
+        "purpose": "New route stations and the answer panel entering."
+      },
+      {
+        "name": "pulse",
+        "value": "1.4s infinite",
+        "purpose": "Active station dot, and the map ring around the entity being read (grows 16px)."
+      },
+      {
+        "name": "blink",
+        "value": "1.2s infinite, 50% opacity 0.25",
+        "purpose": "Live tag dot."
+      },
+      {
+        "name": "route-grow",
+        "value": "650ms, cubic ease-out",
+        "purpose": "Each route leg and its spurs drawing in on the map."
+      },
+      {
+        "name": "ping",
+        "value": "1800ms",
+        "purpose": "Amber ring around an entity after a chip hover or click."
+      },
+      {
+        "name": "map-zoom",
+        "value": "300ms per step, factor 1.4; fit 600ms",
+        "purpose": "Zoom buttons and fit-to-route / fit-all."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; transition: none",
+        "purpose": "All animation and transition disabled under prefers-reduced-motion; route legs draw at full length."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "960px"
+      }
+    ],
+    "map": {
+      "ground": "radial-gradient(circle at 1px 1px, rgba(244,241,234,0.07) 1px, transparent 0) 0 0 / 28px 28px over #0b1230",
+      "station": {
+        "radius": 5,
+        "fill": "#f4f1ea",
+        "ring": "line ink, 2.2px"
+      },
+      "interchange": {
+        "minDegree": 7,
+        "radius": 9,
+        "fill": "#0b1230",
+        "ring": "#f4f1ea, 3.2px",
+        "core": "line ink, 3.4px radius"
+      },
+      "links": {
+        "width": "1.2 (agent) / 1.3 (graph), 2.4 when lit",
+        "alphaRest": "0.42 agent, 0.5 graph",
+        "alphaProposed": 0.7,
+        "proposedDash": [
+          4,
+          3
+        ],
+        "alphaOnRoute": 0.28,
+        "alphaLit": 0.95,
+        "alphaDimmed": 0.05,
+        "arrow": "3.5 at 92%"
+      },
+      "dimmedStationAlpha": 0.14,
+      "label": {
+        "font": "600 13px Barlow Condensed (screen size)",
+        "tracking": "0.06em",
+        "case": "uppercase",
+        "fill": "#f4f1ea",
+        "halo": "#0b1230, 3.4px",
+        "placement": "right, then left; route stations also below, above; skipped on collision"
+      },
+      "stamp": {
+        "radius": 10,
+        "fill": "#f4f1ea",
+        "numeral": "700 Barlow Condensed, #0b1230",
+        "position": "top-left of station"
+      },
+      "route": {
+        "casing": "#0b1230, 10px",
+        "core": "#f4f1ea, 5px",
+        "caps": "round"
+      },
+      "spurs": {
+        "dash": [
+          2,
+          4
+        ],
+        "current": "#f4f1ea 85%, 2.2px",
+        "past": "#f4f1ea 30%, 1.6px"
+      },
+      "selectedRing": "#f4f1ea, 2px, radius + 6",
+      "pingRing": "#ffc20e, 3px",
+      "typeInks": {
+        "service": "#2f6bff",
+        "team": "#ffc20e",
+        "person": "#e21d2d",
+        "standard": "#22b14c",
+        "tool": "#a274ef",
+        "guide": "#19b5b0",
+        "unknown": "#8e98bb"
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one scarlet action per view (Ask, Test connection).",
+      "html": "<button class=\"ds-btn-primary\">Ask <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:46px;padding:0 20px;border-radius:4px;font:600 15px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;cursor:pointer;border:1px solid var(--hairline-strong, rgba(244,241,234,0.5));transition:background 0.2s, border-color 0.2s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);background:var(--scarlet, #e21d2d);border-color:var(--scarlet, #e21d2d);color:#fff;} .ds-btn-primary:hover{background:var(--scarlet-deep, #c4101e);border-color:var(--scarlet-deep, #c4101e);} .ds-btn-primary:active{transform:translateY(1px);} .ds-btn-primary:focus-visible{outline:2px solid var(--porcelain, #f4f1ea);outline-offset:2px;} .ds-btn-primary:disabled{opacity:0.45;cursor:not-allowed;}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Default hairline plate button for secondary actions (New, Copy).",
+      "html": "<button class=\"ds-btn-ghost\">New</button>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:46px;padding:0 20px;border-radius:4px;font:600 15px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;cursor:pointer;border:1px solid var(--hairline-strong, rgba(244,241,234,0.5));transition:background 0.2s, border-color 0.2s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);background:none;color:var(--porcelain, #f4f1ea);} .ds-btn-ghost:hover{border-color:var(--porcelain, #f4f1ea);} .ds-btn-ghost:active{transform:translateY(1px);} .ds-btn-ghost:focus-visible{outline:2px solid var(--porcelain, #f4f1ea);outline-offset:2px;}"
+    },
+    {
+      "name": "Square Map Button",
+      "kind": "button",
+      "refersTo": "button-square",
+      "description": "40px icon plate floating over the map for zoom and fit.",
+      "html": "<button class=\"ds-btn-sq\" title=\"Zoom in\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button>",
+      "css": ".ds-btn-sq{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--hairline-strong, rgba(244,241,234,0.5));border-radius:4px;background:rgba(7,12,34,0.86);color:var(--porcelain, #f4f1ea);cursor:pointer;transition:border-color 0.2s, background 0.2s;} .ds-btn-sq:hover{border-color:var(--porcelain, #f4f1ea);background:var(--enamel-hover, #16224d);} .ds-btn-sq:focus-visible{outline:2px solid var(--porcelain, #f4f1ea);outline-offset:2px;}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Deep enamel well with a leading stroke icon and a scarlet caret; cobalt on focus.",
+      "html": "<label class=\"ds-field\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg><input placeholder=\"Ask about services, teams, people, standards…\"></label>",
+      "css": ".ds-field{display:flex;align-items:center;gap:10px;width:360px;height:46px;padding:0 14px;border:1px solid var(--hairline-strong, rgba(244,241,234,0.5));border-radius:4px;background:var(--enamel-deep, #070c22);color:var(--ink-3, #8e98bb);transition:border-color 0.2s;} .ds-field:focus-within{border-color:var(--cobalt, #2f6bff);box-shadow:0 0 0 1px var(--cobalt, #2f6bff);} .ds-field input{flex:1;min-width:0;height:100%;border:0;outline:0;background:none;color:var(--porcelain, #f4f1ea);font:15px 'Barlow', system-ui, sans-serif;caret-color:var(--scarlet, #e21d2d);} .ds-field input::placeholder{color:var(--ink-3, #8e98bb);}"
+    },
+    {
+      "name": "Rail Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Condensed uppercase nav on deep enamel; active item raised with a scarlet underline.",
+      "html": "<nav class=\"ds-nav\"><button class=\"on\">Agent</button><button>Graph</button><button>MCP</button></nav>",
+      "css": ".ds-nav{display:flex;flex-direction:column;gap:2px;width:200px;padding:16px;background:var(--enamel-deep, #070c22);} .ds-nav button{position:relative;display:flex;align-items:center;gap:12px;padding:10px;border:0;border-radius:4px;background:none;cursor:pointer;font:600 15px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-2, #bcc4de);text-align:left;transition:background 0.2s, color 0.2s;} .ds-nav button:hover{background:var(--enamel-hover, #16224d);color:var(--porcelain, #f4f1ea);} .ds-nav button:focus-visible{outline:2px solid var(--porcelain, #f4f1ea);outline-offset:2px;} .ds-nav button.on{background:var(--enamel-raise, #0f1a3e);color:var(--porcelain, #f4f1ea);} .ds-nav button.on::after{content:'';position:absolute;left:10px;right:10px;bottom:2px;height:3px;background:var(--scarlet, #e21d2d);}"
+    },
+    {
+      "name": "Run Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Run state chip with a signal dot; Live blinks scarlet, Done shows green.",
+      "html": "<span class=\"ds-tag ds-live\">Live</span> <span class=\"ds-tag ds-done\">Arrived</span> <span class=\"ds-tag\">Idle</span>",
+      "css": ".ds-tag{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 11px;border:1px solid var(--hairline-strong, rgba(244,241,234,0.5));border-radius:3px;font:600 12px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-2, #bcc4de);} .ds-tag::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ink-3, #8e98bb);} .ds-live{color:var(--porcelain, #f4f1ea);border-color:var(--scarlet, #e21d2d);} .ds-live::before{background:var(--scarlet, #e21d2d);animation:ds-blink 1.2s infinite;} .ds-done{color:var(--porcelain, #f4f1ea);} .ds-done::before{background:var(--green, #22b14c);} @keyframes ds-blink{50%{opacity:0.25;}} @media (prefers-reduced-motion: reduce){.ds-live::before{animation:none;}}"
+    },
+    {
+      "name": "Stop Chip",
+      "kind": "chip",
+      "refersTo": "stop-chip",
+      "description": "Entity reference: line dash in the type ink, name, station number; hover borders in the line ink.",
+      "html": "<button class=\"ds-stop\" style=\"--c:#2f6bff\"><i></i>Billing API <b>3</b></button> <button class=\"ds-stop\" style=\"--c:#ffc20e\"><i></i>Platform Team <b>4</b></button>",
+      "css": ".ds-stop{display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 9px;border:1px solid var(--hairline, rgba(244,241,234,0.24));border-radius:3px;font:13px 'Barlow', system-ui, sans-serif;color:var(--porcelain, #f4f1ea);background:rgba(244,241,234,0.03);cursor:pointer;transition:border-color 0.2s, background 0.2s;} .ds-stop:hover{border-color:var(--c);background:rgba(244,241,234,0.07);} .ds-stop:focus-visible{outline:2px solid var(--porcelain, #f4f1ea);outline-offset:2px;} .ds-stop i{width:12px;height:3px;border-radius:1px;background:var(--c);} .ds-stop b{font:700 11px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.04em;color:var(--ink-3, #8e98bb);}"
+    },
+    {
+      "name": "Type Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Solid line-ink fill naming an entity type or tool access; enamel ink variant for light inks.",
+      "html": "<span class=\"ds-badge\" style=\"--c:#2f6bff\">service</span> <span class=\"ds-badge ds-dark\" style=\"--c:#ffc20e\">team</span> <span class=\"ds-badge\" style=\"--c:#e21d2d\">Write</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:2px;background:var(--c);color:#fff;font:700 11.5px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.16em;text-transform:uppercase;} .ds-dark{color:var(--enamel, #0b1230);}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Raised enamel plate with a strong hairline edge and a condensed uppercase heading.",
+      "html": "<section class=\"ds-card\"><h2>HTTP endpoint</h2><p>Streamable HTTP, stateless. Available while the server is running.</p></section>",
+      "css": ".ds-card{width:340px;padding:18px;border:1px solid var(--hairline-strong, rgba(244,241,234,0.5));border-radius:4px;background:var(--enamel-raise, #0f1a3e);color:var(--porcelain, #f4f1ea);} .ds-card h2{margin:0 0 6px;font:600 15px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.16em;text-transform:uppercase;} .ds-card p{margin:0;font:14px/1.5 'Barlow', system-ui, sans-serif;color:var(--ink-2, #bcc4de);}"
+    },
+    {
+      "name": "Route Station",
+      "kind": "custom",
+      "refersTo": "station-dot",
+      "description": "Signature: numbered station on a vertical spine; done porcelain, active pulsing with amber timing.",
+      "html": "<ol class=\"ds-route\"><li class=\"done\"><span class=\"dot\">1</span><div><h3>Search <span>“billing”</span></h3><p>Looking for the billing service first.</p></div></li><li class=\"active\"><span class=\"dot\">2</span><div><h3>Open <em>0.4 s</em></h3><p>Reading its owners and standards.</p></div></li></ol>",
+      "css": ".ds-route{list-style:none;margin:0;padding:0;width:380px;color:var(--porcelain, #f4f1ea);font:15px/1.5 'Barlow', system-ui, sans-serif;} .ds-route li{position:relative;display:grid;grid-template-columns:34px 1fr;column-gap:14px;padding-bottom:18px;} .ds-route li::before{content:'';position:absolute;left:16px;top:22px;bottom:-2px;width:3px;background:var(--hairline-strong, rgba(244,241,234,0.5));} .ds-route li:last-child::before{display:none;} .ds-route li.done::before{background:var(--porcelain, #f4f1ea);} .ds-route .dot{position:relative;z-index:1;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--enamel, #0b1230);border:3px solid var(--hairline-strong, rgba(244,241,234,0.5));font:700 13px/1 'Barlow Condensed', 'Arial Narrow', sans-serif;color:var(--ink-2, #bcc4de);} .ds-route .done .dot,.ds-route .active .dot{border-color:var(--porcelain, #f4f1ea);color:var(--porcelain, #f4f1ea);} .ds-route .active .dot{animation:ds-pulse 1.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;} .ds-route h3{display:flex;gap:10px;align-items:baseline;margin:5px 0 0;font:600 16px/1.25 'Barlow Condensed', 'Arial Narrow', sans-serif;letter-spacing:0.1em;text-transform:uppercase;} .ds-route h3 span{font:400 15px 'Barlow', system-ui, sans-serif;letter-spacing:0;text-transform:none;color:var(--ink-2, #bcc4de);} .ds-route h3 em{font:600 13px 'Barlow Condensed', 'Arial Narrow', sans-serif;font-style:normal;letter-spacing:0.06em;color:var(--amber, #ffc20e);} .ds-route p{margin:4px 0 0;font-size:14.5px;color:var(--ink-2, #bcc4de);} @keyframes ds-pulse{0%{box-shadow:0 0 0 0 rgba(244,241,234,0.55);}100%{box-shadow:0 0 0 12px rgba(244,241,234,0);}} @media (prefers-reduced-motion: reduce){.ds-route .active .dot{animation:none;}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Midnight Transit Mural",
+    "overview": "Nexus is drawn as a city transit system at night. The ground is deep midnight enamel, text is warm porcelain, and each entity type runs on its own line ink, the way a metro map gives every line one colour. The agent's reasoning is a journey: every thinking summary and tool call arrives as a numbered station on a vertical route line, and every entity it reads lights up on the map in order. The whole network stays readable like a transit map rather than a glowing hairball. Once a route exists, only the route burns bright and everything else fades back.\n\nThe density is operational. A fixed left rail holds the brand, view switcher and a live status board. Content runs in tall columns divided by hairlines: the journey column and the map in Agent, the map and a station card in Graph, a reading page in MCP. Type speaks in two registers. Condensed, tracked transit capitals (Barlow Condensed) handle every heading, label, control and figure. Plain Barlow handles prose and data values, with tabular figures throughout. Depth comes from layered enamel tones and porcelain hairlines, never from blurred shadows.\n\nThe world rejects the usual \"AI dashboard\" look: no neon glow graph, no chat drawer, no glassy floating cards. It reads like printed enamel signage that happens to move.",
+    "keyCharacteristics": [
+      "Midnight enamel ground in four tonal strata; porcelain ink in three strengths.",
+      "One line ink per entity type, reused everywhere that type appears (dash marker, station ring, link tint, badge).",
+      "Condensed uppercase transit capitals with wide tracking for every label and control.",
+      "Hairline-ruled panels and gently squared corners (2 to 4px); circles are reserved for stations, lamps and dots.",
+      "The signature: the agent's route drawn on the map as a cased porcelain line, station by station, numbered, with the rest of the network dimmed."
+    ],
+    "rules": [
+      {
+        "name": "The One Line, One Ink Rule",
+        "body": "Each entity type owns exactly one ink (services cobalt, teams amber, people scarlet, standards green, tools violet, guides teal). Wherever that type appears (the 18 by 4px line dash, a station ring, a link tint, a type badge, a filter button), it uses that ink and no other.",
+        "section": "colors"
+      },
+      {
+        "name": "The Scarlet Departure Rule",
+        "body": "A scarlet fill is reserved for the single primary action in a view. Everywhere else, scarlet appears only as a thin signal: a 3px underline, a 7px dot or a caret.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink Stays Porcelain Rule",
+        "body": "Prose and headings are set only in porcelain, mist or dusk ink. Line inks never set running text. The one exception is amber, for short status words and timings.",
+        "section": "colors"
+      },
+      {
+        "name": "The Transit Capitals Rule",
+        "body": "Every heading, label, control and figure is set in Barlow Condensed. Labels and controls are uppercase and tracked between 0.1em and 0.18em. Prose, questions and data values stay in Barlow, sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "Tabular numerals are on from the body down, so timings, counts and stats never jitter while they tick.",
+        "section": "typography"
+      },
+      {
+        "name": "The Enamel Strata Rule",
+        "body": "To lift something, move it one enamel stratum and give it a hairline. Never add a blur shadow or a glow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Gently Squared Rule",
+        "body": "Rectangles never go above 4px radius and are never pills. A circle always means a station or a signal.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Route Burns Rule",
+        "body": "Once a route exists, every station off it drops to 14% opacity and every link off it to 5%. The route is the only bright thing on the map. Graph selection follows the same rule: the selected station's neighbourhood stays lit and everything else dims.",
+        "section": "components"
+      },
+      {
+        "name": "The Legible Map Rule",
+        "body": "Labels are placed in priority order (current station, then stamp order, then interchanges, then the rest) and dropped rather than overlapped.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** take every entity colour from its line ink (cobalt, amber, scarlet, green, violet, teal) and use that same ink everywhere the type appears.",
+      "**Do** set every label, heading and control in Barlow Condensed uppercase with 0.1 to 0.18em tracking, and every sentence in Barlow.",
+      "**Do** build depth from the four enamel strata plus 1px porcelain hairlines (24% or 50%).",
+      "**Do** keep rectangles at 2px (badges), 3px (chips) or 4px (controls and panels), and reserve circles for stations and signals.",
+      "**Do** inset bars, panels and map overlays by the 22px gutter, and drop to 16px at 960px and below.",
+      "**Do** use the system ease `cubic-bezier(0.16, 1, 0.3, 1)` for arrivals and presses, 0.2s for colour changes, and disable all animation under `prefers-reduced-motion`.",
+      "**Do** dim everything off the route (stations 14%, links 5%) once the agent starts travelling."
+    ],
+    "donts": [
+      "**Don't** use blurred drop shadows or glows. The only box-shadows are zero-blur spread rings for focus, the ready lamp and the station pulse.",
+      "**Don't** draw the network as a neon hairball. Off-route links stay faint and labels never overlap.",
+      "**Don't** fill more than one action per view with scarlet, or use a line ink for running text (amber status words excepted).",
+      "**Don't** set white ink on a badge fill that cannot hold 4.5:1 at 11.5px. Use the enamel-ink variant instead.",
+      "**Don't** introduce pill shapes, radii above 4px or a third typeface.",
+      "**Don't** stack a small caps label above a display headline. Section labels are themselves headings, ruled out with a trailing hairline."
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "title": "Choose the visual world for Nexus",
+  "question": "The roll assigned the Engineering Computation Pad. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Engineering Computation Pad",
+      "kicker": "THE ROLL",
+      "lineage": "pale-green engineering pads and numbered lab-notebook entries",
+      "thesis": "The agent keeps a lab notebook: every step is a numbered, timed entry, and the graph beside it is the page it sketches on.",
+      "palette": ["#e9efdf", "#9db58f", "#25302a", "#1f5ad1", "#c4452d"],
+      "materials": ["pale green grid paper", "graphite ink", "blue pencil for what is live", "red pencil for unverified facts"],
+      "viewport": "Agent tab split 5/7: numbered entry log with thinking and tool calls on the left, live graph on the right where each node the agent reads is circled and stamped with its entry number.",
+      "risk": "Grid paper can turn into costume if it leaks into controls; it must stay on grounds and rules only.",
+      "raised": [
+        {"from": "challenger-labanotation", "raise": "Each entry's bar length encodes its real duration, so slow steps are visible at a glance."},
+        {"from": "challenger-circle-catalog", "raise": "The agent's route is drawn on the graph, connecting entities in the order it reached them."},
+        {"from": "challenger-metro", "raise": "One live colour owns everything happening now: the active entry, the node being read, the progress rule."},
+        {"from": "challenger-crouwel", "raise": "The pad grid is the real layout armature: panels and rows snap to the same cell."},
+        {"from": "challenger-datamatics", "raise": "Real numbers at density: elapsed time, tool calls, nodes read, verified vs proposed, in tabular figures."}
+      ],
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "tabs + run stats", "x": 0, "y": 0, "w": 12, "h": 1},
+        {"label": "entry log (numbered steps)", "x": 0, "y": 1, "w": 5, "h": 7},
+        {"label": "answer + sources", "x": 0, "y": 8, "w": 5, "h": 1},
+        {"label": "question input", "x": 0, "y": 9, "w": 5, "h": 1},
+        {"label": "live graph: route + entry stamps", "x": 5, "y": 1, "w": 7, "h": 9, "accent": true}
+      ]}
+    },
+    {
+      "id": "model-pick",
+      "label": "Transit Diagram",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Vignelli and Beck schematic transit maps",
+      "thesis": "The agent's reasoning is a journey: each tool call a station on its line, the graph a network map it rides across.",
+      "palette": ["#f7f7f4", "#1b1b1f", "#e03a2f", "#1f6fd1", "#f2a81d", "#2e9d5b"],
+      "materials": ["enamel signage", "line inks per entity type", "interchange rings"],
+      "viewport": "Split view: a vertical route line of stations (steps) beside the graph, the agent's path highlighted as a coloured line.",
+      "risk": "Familiar: it is where most runs for a network product land, and force layouts fight the 45/90 discipline.",
+      "wireframe": {"cols": 12, "rows": 10, "regions": [
+        {"label": "tabs", "x": 0, "y": 0, "w": 12, "h": 1},
+        {"label": "route line of stations", "x": 0, "y": 1, "w": 4, "h": 8},
+        {"label": "input", "x": 0, "y": 9, "w": 4, "h": 1},
+        {"label": "network map + highlighted line", "x": 4, "y": 1, "w": 8, "h": 9, "accent": true}
+      ]}
+    },
+    {
+      "id": "challenger-midnight-transit",
+      "label": "Midnight Transit Mural",
+      "verdict": "competitive",
+      "lineage": "enamel metro maps on midnight blue",
+      "thesis": "The graph as a lit rail network at night; the chosen route burns brightest while the agent rides it.",
+      "palette": ["#121a33", "#f4f1ea", "#e0342b", "#2d64d8", "#f0a630", "#2f9a5c"],
+      "materials": ["midnight enamel", "porcelain station ticks"],
+      "viewport": "Dark full-bleed network with the agent's route glowing station by station; trace docked left.",
+      "case": "Holds product clarity (a path through a network) but a dark projected room loses legibility.",
+      "risk": "Dark ground plus glowing lines drifts toward the neon AI-dashboard default.",
+      "hero": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-midnight-transit-diagram-hero.webp"
+    },
+    {
+      "id": "challenger-labanotation",
+      "label": "Labanotation Score",
+      "verdict": "declined",
+      "lineage": "dance notation staffs",
+      "thesis": "Steps as shaped blocks on a staff whose length is their duration.",
+      "palette": ["#ffffff", "#111111", "#d9d9d9"],
+      "materials": ["score paper", "hatched fills"],
+      "viewport": "Vertical staff of steps reading upward.",
+      "case": "Engineers do not read dance notation; fuses poorly on identification.",
+      "kept": "Duration encoded as length, now on every entry bar.",
+      "risk": "Opaque to anyone who has not learned the notation.",
+      "hero": "https://impeccable.style/worlds/cards/notation-diagram-systems-labanotation-hero.webp"
+    },
+    {
+      "id": "challenger-circle-catalog",
+      "label": "Convention Circle Catalog",
+      "verdict": "declined",
+      "lineage": "newsprint event catalogs with hall maps",
+      "thesis": "Entities as coded cells, circled in pen with a route planned between them.",
+      "palette": ["#e7e4dc", "#1a1a1a", "#d2302c"],
+      "materials": ["newsprint", "biro circles"],
+      "viewport": "Packed grid of entity cells keyed to a map.",
+      "case": "Charming but reads as fandom ephemera, not engineering.",
+      "kept": "The planned route between circled items, now drawn on the graph.",
+      "risk": "Density without hierarchy for a projected screen.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-doujin-event-catalog-hero.webp"
+    },
+    {
+      "id": "challenger-metro",
+      "label": "Metro Typographic Tiles",
+      "verdict": "declined",
+      "lineage": "flat tile interfaces with giant cropped type",
+      "thesis": "Type and colour fields as the whole interface.",
+      "palette": ["#000000", "#00aba9", "#ffffff"],
+      "materials": ["flat tiles", "cropped lowercase"],
+      "viewport": "Panorama of tiles, giant headings cropped off-canvas.",
+      "case": "Tiles cannot carry a graph or a step-by-step trace clearly.",
+      "kept": "One accent colour owns every live state.",
+      "risk": "Style over legibility for reasoning traces.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-metro-typographic-tiles-hero.webp"
+    },
+    {
+      "id": "challenger-crouwel",
+      "label": "Crouwel Grid Specimen",
+      "verdict": "declined",
+      "lineage": "gridded type specimens",
+      "thesis": "The construction grid made visible as the design.",
+      "palette": ["#ffffff", "#9fc3e8", "#111111"],
+      "materials": ["construction hairlines"],
+      "viewport": "Visible grid with monumental gridded letterforms.",
+      "case": "Poster-scale type competes with the trace for attention.",
+      "kept": "The grid as a real layout armature, not decoration.",
+      "risk": "Turns a working screen into a poster.",
+      "hero": "https://impeccable.style/worlds/cards/crouwel-grid-specimen-hero.webp"
+    },
+    {
+      "id": "challenger-datamatics",
+      "label": "Datamatics Field",
+      "verdict": "declined",
+      "lineage": "black-and-white data installations",
+      "thesis": "Dense numeric columns and barcodes as the surface.",
+      "palette": ["#000000", "#ffffff"],
+      "materials": ["hairline bars", "monospace numerals"],
+      "viewport": "Strobing barcode field with data columns.",
+      "case": "Strobing and pure black hurt a projected demo; fuses poorly.",
+      "kept": "Real numbers at data density.",
+      "risk": "Unreadable at a distance.",
+      "hero": "https://impeccable.style/worlds/cards/ikeda-datamatics-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "The AI-dashboard default: dark navy shell, glowing graph, chat panel docked right.",
+    "palette": ["#0b1020", "#e6e9f2", "#7c5cff"],
+    "materials": ["dark glass panels", "neon graph edges"],
+    "viewport": "Dark full graph with a floating chat drawer.",
+    "risk": "Indistinguishable from every other AI graph demo by design."
+  },
+  "steer": true
+}
