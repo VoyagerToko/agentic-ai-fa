@@ -1,6 +1,4 @@
-node_modules/
-data/
 .env
-.impeccable/review/
-.impeccable/ref/
-.impeccable/questions/
+.venv/
+__pycache__/
+data/

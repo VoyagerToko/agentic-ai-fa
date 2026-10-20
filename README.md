@@ -1,86 +1,44 @@
-# Nexus — Company Knowledge Graph
+# Nexus: an agentic knowledge-graph assistant
 
-Nexus turns a folder of company documents into a **knowledge graph** and serves it two ways:
+Ask questions about a company (its services, teams, people, standards, tools and guides) and watch an AI agent
+plan, search, follow relationships and read GitHub code step by step to answer them, with sources.
 
-- **to people**, through a small web app (Graph · Agent · MCP tabs)
-- **to Claude**, through an **Agent** (Claude Sonnet 5.5 with tools) and an **MCP server**
-
-Every fact in the graph is *sourced* (it records the document it came from) and has a *status*:
-**verified** facts are trusted, while **proposed** facts are suggestions that wait for someone to approve or reject them.
-
-> The bundled documents describe **Orbit Labs**, a made-up company, so the project can be demoed out of the box.
-
-## Quick start
-
-Requires **Node.js 22.13+**. There is no database to install, because SQLite is built into Node.
+## Run it
 
 ```bash
-npm install
-cp .env.example .env      # then add your ANTHROPIC_API_KEY and GITHUB_TOKEN
-npm start                 # http://localhost:8030
+python -m venv .venv
+.venv\Scripts\activate            # macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+copy .env.example .env            # then put your ANTHROPIC_API_KEY and GITHUB_TOKEN in .env
+python app.py                     # open http://localhost:8030
 ```
 
-The graph is built from the documents automatically on first start. After editing documents, run `npm run ingest` to rebuild it.
+The first start builds the graph from `knowledge_base/` and downloads a small embedding model (~70 MB).
+After editing documents, delete `data/graph.db` and start again to rebuild.
 
-## Project structure
+## Folder structure
 
 ```
-backend/
-  server.js    web server: frontend files, JSON API, live Agent stream, /mcp endpoint
-  db.js        the graph store (SQLite): nodes, facts, search, traversal, review
-  ingest.js    reads docs/ and builds the graph
-  tools.js     the tool catalogue (graph + GitHub), shared by the Agent and MCP
-  agent.js     Claude Sonnet 5.5 tool loop that answers questions
-  mcp.js       MCP server (stdio, plus the HTTP handler used by server.js)
-  docs/        the source documents: services, teams, people, standards, tools, guides
-frontend/
-  index.html   page layout with the three tabs
-  app.js       Graph, Agent and MCP tab logic
-  style.css    styles (light and dark)
+agentic ai/
+├── app.py               server: graph, ingest, search, tools, agent loop, web routes (7 sections)
+├── mcp_server.py        MCP server: the same tools for Claude Code / Claude Desktop
+├── static/
+│   └── index.html       web page: Agent, Graph and MCP tabs
+├── knowledge_base/      company documents the graph is built from (fictional company "Orbit Labs")
+│   ├── services/  teams/  people/  standards/  tools/  guides/
+├── report/              project report (Word, PDF, Markdown) and architecture diagram
+├── data/                generated: SQLite database + embedding model cache (not committed)
+├── requirements.txt     Python packages
+└── .env.example         template for your API keys (.env is not committed)
 ```
 
 ## How it works
 
-1. **Documents → graph.** Each markdown file in `backend/docs/<folder>/` becomes a node. The folder sets the type, and the file name is the slug.
-   The front matter holds the relationships:
+1. **Ingest:** each markdown file in `knowledge_base/` becomes an entity; its front matter becomes facts,
+   e.g. `dependsOn: postgres, redis`. A `?` in front (`?dependsOn:`) marks a fact as *proposed* (unverified).
+2. **Search:** keyword search (SQLite full-text) plus search by meaning (local embeddings), merged.
+3. **Agent:** Claude Sonnet 5.5 gets the question and a list of tools, and calls them in a loop until it can
+   answer. Every step is streamed to the page, and the entities it used light up on the graph.
+4. **MCP:** `mcp_server.py` serves the same tools so Claude Code or Claude Desktop can use them directly.
 
-   ```markdown
-   ---
-   label: Billing Service
-   desc: Plans, subscriptions, invoices and payments.
-   ownedBy: product-team
-   dependsOn: auth-service, postgres, kafka
-   ?dependsOn: notification-service      # leading "?" = proposed (unconfirmed) fact
-   ---
-   # Billing Service
-   ...body text (searchable)...
-   ```
-
-2. **Graph tab.** An interactive map of every node. Click a node to see its facts, open neighbours, and approve or reject proposed facts.
-3. **Agent tab.** Ask a question. Claude decides which tools to call (search the graph, open an entity, follow dependencies, read GitHub repos), and you watch the steps and touched nodes live before the answer arrives.
-4. **MCP tab.** Connect Claude Code or Claude Desktop to the same tools, over HTTP or stdio, and test the connection from the browser.
-
-## Tools (shared by the Agent and MCP)
-
-| Tool | What it does |
-|---|---|
-| `graph_search` | keyword search across all entities |
-| `graph_entity` | one entity with all its facts and document text |
-| `graph_related` | follow facts several hops, e.g. dependency blast radius |
-| `graph_stats` | graph size and breakdown |
-| `graph_review_list` | proposed facts waiting for review |
-| `graph_propose` | add a proposed fact *(MCP only)* |
-| `graph_verify` | approve or reject a proposed fact *(MCP only)* |
-| `repo_list` / `repo_tree` / `repo_read` / `repo_search` | read GitHub repositories live, using your token |
-
-## Connect Claude via MCP
-
-```bash
-# HTTP (while `npm start` is running)
-claude mcp add --transport http nexus http://localhost:8030/mcp
-
-# or stdio (Claude starts the server itself)
-claude mcp add nexus -- node "/absolute/path/to/backend/mcp.js"
-```
-
-The server listens on `127.0.0.1` only, with no login, so it is meant for local use and demos.
+Connect Claude Code: `claude mcp add nexus -- .venv\Scripts\python.exe mcp_server.py` (run in this folder).

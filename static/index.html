@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nexus</title>
+  <link rel="icon" href="data:,">
+  <!-- vis-network draws the graph, marked turns Markdown answers into HTML, DOMPurify makes that HTML safe -->
+  <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@18.1.1/lib/marked.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.17/dist/purify.min.js"></script>
+  <style>
+    body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: #1d2433; }
+    header { display: flex; gap: 8px; align-items: center; padding: 10px 16px; border-bottom: 1px solid #ddd; }
+    header button { padding: 6px 14px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; }
+    #stats { margin-left: auto; color: #667; font-size: 13px; }
+    .tab { display: grid; grid-template-columns: 420px 1fr; height: calc(100vh - 51px); }
+    .tab[hidden] { display: none; }
+    .left { padding: 16px; overflow-y: auto; border-right: 1px solid #ddd; }
+    .graph { min-height: 300px; }
+    input { width: 100%; box-sizing: border-box; padding: 8px 10px; font: inherit; border: 1px solid #ccc; border-radius: 6px; }
+    form { display: flex; gap: 8px; } form button { padding: 0 16px; }
+    #steps li { margin: 6px 0; font-size: 14px; color: #445; }
+    #steps .think { color: #667; font-style: italic; }
+    #answer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #ddd; }
+    table { border-collapse: collapse; } td, th { border: 1px solid #ddd; padding: 4px 8px; text-align: left; }
+    small { color: #889; } em { color: #b26b00; }
+    #mcp { display: block; padding: 24px; max-width: 900px; } pre { background: #f4f5f7; padding: 10px; overflow-x: auto; }
+    @media (max-width: 800px) { .tab { grid-template-columns: 1fr; height: auto; } .graph { height: 60vh; } }
+  </style>
+</head>
+<body>
+  <header>
+    <b>Nexus</b>
+    <button data-tab="agent">Agent</button>
+    <button data-tab="graph">Graph</button>
+    <button data-tab="mcp">MCP</button>
+    <span id="stats"></span>
+  </header>
+
+  <!-- Agent: ask a question, see each step, see the entities it used light up on the graph -->
+  <section id="agent" class="tab">
+    <div class="left">
+      <form id="ask"><input id="question" placeholder="e.g. What breaks if Postgres goes down?"><button>Ask</button></form>
+      <ol id="steps"></ol>
+      <div id="answer"></div>
+    </div>
+    <div id="agentGraph" class="graph"></div>
+  </section>
+
+  <!-- Graph: explore, search by name or meaning, open an entity, approve or reject proposed facts -->
+  <section id="graph" class="tab" hidden>
+    <div class="left">
+      <input id="find" placeholder="Search by name or meaning…">
+      <ul id="results"></ul>
+      <div id="details"><small>Click a node to see its facts.</small></div>
+    </div>
+    <div id="fullGraph" class="graph"></div>
+  </section>
+
+  <!-- MCP: how to connect Claude to the same tools -->
+  <section id="mcp" class="tab" hidden>
+    <h2>Connect Claude (MCP)</h2>
+    <p>Claude Code, from this project folder:</p>
+    <pre>claude mcp add nexus -- .venv\Scripts\python.exe mcp_server.py</pre>
+    <p>Or over HTTP: run <code>python mcp_server.py --http</code>, then:</p>
+    <pre>claude mcp add --transport http nexus http://localhost:8031/mcp</pre>
+    <h3>Tools</h3>
+    <ul id="toolList"></ul>
+  </section>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const esc = (text) => String(text ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+    const getJson = (url) => fetch(url).then((r) => r.json());
+    const COLORS = { service: '#4c8bf5', team: '#f2b705', person: '#e5484d', standard: '#30a46c', tool: '#8e4ec6', guide: '#12a594' };
+    let graphData, agentGraph, fullGraph;
+
+    // Tabs: show one section, hide the others
+    document.querySelectorAll('[data-tab]').forEach((button) => (button.onclick = () => {
+      document.querySelectorAll('.tab').forEach((tab) => (tab.hidden = tab.id !== button.dataset.tab));
+      if (button.dataset.tab === 'graph') fullGraph.network.fit();
+      if (button.dataset.tab === 'mcp') loadTools();
+    }));
+
+    // Draw the whole graph into a box. Returns the network and its node list (so nodes can be recoloured).
+    function drawGraph(box) {
+      const nodes = new vis.DataSet(graphData.nodes.map((n) => ({ id: n.id, label: n.label, color: COLORS[n.type], shape: 'dot', size: 10 })));
+      const edges = new vis.DataSet(graphData.links.map((l) => ({ from: l.source, to: l.target, title: l.predicate, arrows: 'to', dashes: l.status === 'proposed' })));
+      const network = new vis.Network(box, { nodes, edges }, { edges: { color: '#c8ccd4' }, nodes: { font: { size: 12 } } });
+      return { nodes, network };
+    }
+
+    async function load() {
+      graphData = await getJson('/api/graph');
+      const s = graphData.stats;
+      $('#stats').textContent = `${s.nodes} entities · ${s.verified} verified facts · ${s.proposed} proposed · ${s.embedded} embedded`;
+      agentGraph = drawGraph($('#agentGraph'));
+      fullGraph = drawGraph($('#fullGraph'));
+      fullGraph.network.on('click', (event) => event.nodes[0] && showEntity(event.nodes[0]));
+    }
+
+    // ── Agent ──
+    const chat = crypto.randomUUID(); // the server keeps this chat's history, so follow-up questions work
+    $('#ask').onsubmit = (event) => { event.preventDefault(); ask($('#question').value); };
+
+    function ask(question) {
+      $('#steps').innerHTML = '';
+      $('#answer').textContent = 'Working…';
+      agentGraph.nodes.update(graphData.nodes.map((n) => ({ id: n.id, color: '#dde0e6', size: 10, label: n.label }))); // dim everything
+      const used = [];
+      const step = (html, cls = '') => $('#steps').insertAdjacentHTML('beforeend', `<li class="${cls}">${html}</li>`);
+
+      // The server streams the agent's steps as they happen (Server-Sent Events)
+      const events = new EventSource(`/api/ask?chat=${chat}&q=${encodeURIComponent(question)}`);
+      events.addEventListener('think', (e) => step(esc(JSON.parse(e.data).text), 'think'));
+      events.addEventListener('tool', (e) => {
+        const { name, input } = JSON.parse(e.data);
+        step(`<b>${esc(name)}</b> <small>${esc(JSON.stringify(input))}</small>`);
+      });
+      events.addEventListener('node', (e) => {
+        const slug = JSON.parse(e.data).slug;
+        const node = graphData.nodes.find((n) => n.id === slug);
+        if (!node || used.includes(slug)) return;
+        used.push(slug);
+        // Light the node up: its own colour, bigger, numbered in the order the agent reached it
+        agentGraph.nodes.update({ id: slug, color: COLORS[node.type], size: 20, label: `${used.length}. ${node.label}` });
+        agentGraph.network.fit({ nodes: used, animation: { duration: 600 } });
+        $('#steps').lastElementChild.insertAdjacentHTML('beforeend', ` → ${esc(node.label)}`);
+      });
+      events.addEventListener('answer', (e) => {
+        $('#answer').innerHTML = DOMPurify.sanitize(marked.parse(JSON.parse(e.data).answer));
+        events.close();
+      });
+      events.addEventListener('failed', (e) => {
+        $('#answer').textContent = 'Error: ' + JSON.parse(e.data).error;
+        events.close();
+      });
+      events.onerror = () => events.close(); // stream ended: don't let the browser reconnect and ask again
+    }
+
+    // ── Graph ──
+    async function showEntity(slug) {
+      const e = await getJson('/api/entity/' + slug);
+      const fact = (f) => `<li>${esc(f.subject_label)} <b>${esc(f.predicate)}</b> ${esc(f.object_label)}` +
+        (f.status === 'proposed' ? ` <em>proposed</em> <button onclick="review(${f.id}, 'verified', '${slug}')">Approve</button> <button onclick="review(${f.id}, 'rejected', '${slug}')">Reject</button>` : '') + '</li>';
+      $('#details').innerHTML = `<h3>${esc(e.label)}</h3><small>${esc(e.type)} · ${esc(e.path)}</small><p>${esc(e.description)}</p><ul>${e.facts.map(fact).join('')}</ul>`;
+      fullGraph.network.selectNodes([slug]);
+      fullGraph.network.focus(slug, { scale: 1.2, animation: true });
+    }
+
+    async function review(id, status, slug) {
+      await fetch('/api/review', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, status }) });
+      await load();
+      showEntity(slug);
+    }
+
+    let searchTimer;
+    $('#find').oninput = (event) => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(async () => {
+        const hits = await getJson('/api/search?q=' + encodeURIComponent(event.target.value));
+        $('#results').innerHTML = hits.map((h) => `<li><a href="#" onclick="showEntity('${h.slug}'); return false">${esc(h.label)}</a> <small>${h.matched}</small></li>`).join('');
+      }, 250);
+    };
+
+    // ── MCP ──
+    async function loadTools() {
+      const tools = await getJson('/api/tools');
+      $('#toolList').innerHTML = tools.map((t) => `<li><b>${t.name}</b>${t.writes ? ' <em>(changes data)</em>' : ''}: ${esc(t.description)}</li>`).join('');
+    }
+
+    load();
+  </script>
+</body>
+</html>
