@@ -9,14 +9,22 @@ The tools are the exact same functions the web agent uses (app.py, section 5).
 
 import sys
 
-from mcp.server.mcpserver import MCPServer
+from mcp.server.mcpserver import MCPServer   # the official MCP Python library
 
-import app
+import app   # importing app.py opens the same database and gives us its tool functions
 
+# Create the MCP server and register every tool. MCP (Model Context Protocol) is a standard way for
+# AI apps to discover and call outside tools. add_tool() reads each function's name, docstring and
+# type hints, so the client sees the same name, description and arguments as our own agent does.
+# Unlike the web agent, MCP clients also get the two write tools (propose_fact, verify_fact).
 mcp = MCPServer("nexus")
 for tool in app.READ_TOOLS + app.WRITE_TOOLS:
     mcp.add_tool(tool)  # name, description and arguments come from the function itself
 
+# Start-up: build the graph if the database is empty, then serve the tools in one of two ways:
+#   --http  -> a small web server at http://localhost:8031/mcp (stateless, plain JSON replies)
+#   default -> stdio: the MCP client starts this file and talks to it through stdin/stdout,
+#              so nothing else may be printed to stdout here.
 if __name__ == "__main__":
     if app.stats()["nodes"] == 0:
         app.ingest()

@@ -9,22 +9,29 @@
   <script src="https://cdn.jsdelivr.net/npm/marked@18.1.1/lib/marked.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.17/dist/purify.min.js"></script>
   <style>
+    /* Page and header bar (title, tab buttons, graph counts on the right) */
     body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: #1d2433; }
     header { display: flex; gap: 8px; align-items: center; padding: 10px 16px; border-bottom: 1px solid #ddd; }
     header button { padding: 6px 14px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; }
     #stats { margin-left: auto; color: #667; font-size: 13px; }
+    /* Each tab = two columns: a 420px panel on the left, the graph filling the rest. Hidden tabs disappear. */
     .tab { display: grid; grid-template-columns: 420px 1fr; height: calc(100vh - 51px); }
     .tab[hidden] { display: none; }
     .left { padding: 16px; overflow-y: auto; border-right: 1px solid #ddd; }
     .graph { min-height: 300px; }
+    /* Inputs and the question form */
     input { width: 100%; box-sizing: border-box; padding: 8px 10px; font: inherit; border: 1px solid #ccc; border-radius: 6px; }
     form { display: flex; gap: 8px; } form button { padding: 0 16px; }
+    /* Agent steps list (reasoning lines in grey italics) and the answer below it */
     #steps li { margin: 6px 0; font-size: 14px; color: #445; }
     #steps .think { color: #667; font-style: italic; }
     #answer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #ddd; }
+    /* Tables inside answers; small grey notes; "proposed" labels in amber */
     table { border-collapse: collapse; } td, th { border: 1px solid #ddd; padding: 4px 8px; text-align: left; }
     small { color: #889; } em { color: #b26b00; }
+    /* MCP tab is a single readable column; command boxes scroll sideways if long */
     #mcp { display: block; padding: 24px; max-width: 900px; } pre { background: #f4f5f7; padding: 10px; overflow-x: auto; }
+    /* Narrow screens (phones): stack the panel above the graph */
     @media (max-width: 800px) { .tab { grid-template-columns: 1fr; height: auto; } .graph { height: 60vh; } }
   </style>
 </head>
@@ -69,20 +76,34 @@
   </section>
 
   <script>
+    // ── Small helpers ──
+    // $('#id') finds one element on the page (short for document.querySelector).
     const $ = (selector) => document.querySelector(selector);
+    // esc() makes text safe to put inside HTML: characters like < and > are turned into codes,
+    // so text from the server can never be run as HTML or script.
     const esc = (text) => String(text ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+    // getJson('/api/...') calls the Python server and returns the parsed JSON reply.
     const getJson = (url) => fetch(url).then((r) => r.json());
+    // One colour per entity type, used for the graph's nodes.
     const COLORS = { service: '#4c8bf5', team: '#f2b705', person: '#e5484d', standard: '#30a46c', tool: '#8e4ec6', guide: '#12a594' };
+    // graphData = all nodes and links from the server; agentGraph / fullGraph = the two drawn graphs.
     let graphData, agentGraph, fullGraph;
 
-    // Tabs: show one section, hide the others
+    // ── Tabs ──
+    // Clicking a header button shows its section and hides the others.
+    // The Graph tab re-fits its drawing (it can't measure itself while hidden);
+    // the MCP tab loads the tool list the first time it opens.
     document.querySelectorAll('[data-tab]').forEach((button) => (button.onclick = () => {
       document.querySelectorAll('.tab').forEach((tab) => (tab.hidden = tab.id !== button.dataset.tab));
       if (button.dataset.tab === 'graph') fullGraph.network.fit();
       if (button.dataset.tab === 'mcp') loadTools();
     }));
 
-    // Draw the whole graph into a box. Returns the network and its node list (so nodes can be recoloured).
+    // Draw the whole graph into a box using the vis-network library.
+    //   nodes: one dot per entity, coloured by type
+    //   edges: one arrow per fact (subject -> object); hovering shows the relationship name;
+    //          proposed (unverified) facts are drawn dashed
+    // Returns the network and its node list, so nodes can be recoloured later (agent highlighting).
     function drawGraph(box) {
       const nodes = new vis.DataSet(graphData.nodes.map((n) => ({ id: n.id, label: n.label, color: COLORS[n.type], shape: 'dot', size: 10 })));
       const edges = new vis.DataSet(graphData.links.map((l) => ({ from: l.source, to: l.target, title: l.predicate, arrows: 'to', dashes: l.status === 'proposed' })));
@@ -90,6 +111,9 @@
       return { nodes, network };
     }
 
+    // Load the graph from the server, show the counts in the header, and draw both graphs
+    // (the Agent tab's and the Graph tab's). Clicking a node in the Graph tab opens its details.
+    // Called once on page load, and again after a fact is approved or rejected.
     async function load() {
       graphData = await getJson('/api/graph');
       const s = graphData.stats;
@@ -100,23 +124,37 @@
     }
 
     // ── Agent ──
-    const chat = crypto.randomUUID(); // the server keeps this chat's history, so follow-up questions work
+    // A random id for this browser tab's conversation. The server keeps this chat's history,
+    // so follow-up questions ("and who leads that team?") have context.
+    const chat = crypto.randomUUID();
+    // Pressing Ask (or Enter) sends the question instead of reloading the page.
     $('#ask').onsubmit = (event) => { event.preventDefault(); ask($('#question').value); };
 
+    // Ask the agent a question and show its work live:
+    //   1. clear the old steps and answer, and grey out every node on the agent graph
+    //   2. open a live stream to /api/ask; the server sends one event per agent step
+    //   3. "think" -> a reasoning summary line; "tool" -> a tool-call line;
+    //      "node" -> light that entity up on the graph; "answer" -> show the final answer
     function ask(question) {
       $('#steps').innerHTML = '';
       $('#answer').textContent = 'Working…';
       agentGraph.nodes.update(graphData.nodes.map((n) => ({ id: n.id, color: '#dde0e6', size: 10, label: n.label }))); // dim everything
-      const used = [];
+      const used = [];   // entities the agent has touched so far, in order
+      // step() adds one line to the numbered list of steps.
       const step = (html, cls = '') => $('#steps').insertAdjacentHTML('beforeend', `<li class="${cls}">${html}</li>`);
 
-      // The server streams the agent's steps as they happen (Server-Sent Events)
+      // The server streams the agent's steps as they happen (Server-Sent Events).
+      // EventSource is the browser's built-in way to receive them; each listener handles one event type.
       const events = new EventSource(`/api/ask?chat=${chat}&q=${encodeURIComponent(question)}`);
+      // Claude's reasoning summary, shown in grey italics.
       events.addEventListener('think', (e) => step(esc(JSON.parse(e.data).text), 'think'));
+      // A tool call: its name in bold and its inputs in small text, e.g. "open_entity {"slug":"postgres"}".
       events.addEventListener('tool', (e) => {
         const { name, input } = JSON.parse(e.data);
         step(`<b>${esc(name)}</b> <small>${esc(JSON.stringify(input))}</small>`);
       });
+      // An entity the last tool touched. The first time we see it: colour it, enlarge it, number it,
+      // zoom the graph to show every entity used so far, and add its name to the step line ("→ Postgres").
       events.addEventListener('node', (e) => {
         const slug = JSON.parse(e.data).slug;
         const node = graphData.nodes.find((n) => n.id === slug);
@@ -127,10 +165,13 @@
         agentGraph.network.fit({ nodes: used, animation: { duration: 600 } });
         $('#steps').lastElementChild.insertAdjacentHTML('beforeend', ` → ${esc(node.label)}`);
       });
+      // The final answer: Markdown -> HTML (marked), cleaned of anything unsafe (DOMPurify), then shown.
+      // Closing the stream tells the browser we are done.
       events.addEventListener('answer', (e) => {
         $('#answer').innerHTML = DOMPurify.sanitize(marked.parse(JSON.parse(e.data).answer));
         events.close();
       });
+      // The server hit an error (e.g. missing API key): show it instead of an answer.
       events.addEventListener('failed', (e) => {
         $('#answer').textContent = 'Error: ' + JSON.parse(e.data).error;
         events.close();
@@ -139,8 +180,12 @@
     }
 
     // ── Graph ──
+    // Show one entity in the side panel: its name, type, source file, description and every fact.
+    // Proposed (unverified) facts get Approve / Reject buttons. The graph then selects the node
+    // and zooms to it.
     async function showEntity(slug) {
       const e = await getJson('/api/entity/' + slug);
+      // fact() turns one fact into a list item: "Billing Service dependsOn Postgres" (+ buttons if proposed).
       const fact = (f) => `<li>${esc(f.subject_label)} <b>${esc(f.predicate)}</b> ${esc(f.object_label)}` +
         (f.status === 'proposed' ? ` <em>proposed</em> <button onclick="review(${f.id}, 'verified', '${slug}')">Approve</button> <button onclick="review(${f.id}, 'rejected', '${slug}')">Reject</button>` : '') + '</li>';
       $('#details').innerHTML = `<h3>${esc(e.label)}</h3><small>${esc(e.type)} · ${esc(e.path)}</small><p>${esc(e.description)}</p><ul>${e.facts.map(fact).join('')}</ul>`;
@@ -148,12 +193,17 @@
       fullGraph.network.focus(slug, { scale: 1.2, animation: true });
     }
 
+    // Approve ('verified') or reject ('rejected') a proposed fact, then reload the graph
+    // (an approved fact's dashed line turns solid) and re-open the same entity.
     async function review(id, status, slug) {
       await fetch('/api/review', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, status }) });
       await load();
       showEntity(slug);
     }
 
+    // Search box: wait until typing pauses for 250 ms (so we don't search on every key press),
+    // then ask the server's hybrid search and list the results with how each matched
+    // (keyword, meaning, or both). Clicking a result opens that entity.
     let searchTimer;
     $('#find').oninput = (event) => {
       clearTimeout(searchTimer);
@@ -164,11 +214,14 @@
     };
 
     // ── MCP ──
+    // Fill the MCP tab's tool list from the server: each tool's name, its description, and a note
+    // on the ones that change data (only available to MCP clients, never to the agent).
     async function loadTools() {
       const tools = await getJson('/api/tools');
       $('#toolList').innerHTML = tools.map((t) => `<li><b>${t.name}</b>${t.writes ? ' <em>(changes data)</em>' : ''}: ${esc(t.description)}</li>`).join('');
     }
 
+    // Start: load and draw the graph as soon as the page opens.
     load();
   </script>
 </body>
